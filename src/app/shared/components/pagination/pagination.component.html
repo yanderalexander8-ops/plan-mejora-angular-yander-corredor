@@ -1,0 +1,27 @@
+<div class="pagination-bar">
+  <span class="muted">Mostrando {{ from }} – {{ to }} de {{ total }}</span>
+
+  <div class="pagination">
+    <button type="button" class="btn btn-sm" [disabled]="currentPage === 1" (click)="go(currentPage - 1)">
+      Anterior
+    </button>
+
+    <ng-container *ngFor="let p of pages">
+      <span *ngIf="p === '...'" class="pagination-dots">…</span>
+      <button
+        *ngIf="p !== '...'"
+        type="button"
+        class="btn btn-sm btn-page"
+        [class.btn-page-active]="p === currentPage"
+        [attr.aria-current]="p === currentPage ? 'page' : null"
+        (click)="go(p)"
+      >
+        {{ p }}
+      </button>
+    </ng-container>
+
+    <button type="button" class="btn btn-sm" [disabled]="currentPage === totalPages" (click)="go(currentPage + 1)">
+      Siguiente
+    </button>
+  </div>
+</div>

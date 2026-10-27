@@ -1,0 +1,9 @@
+<div class="toast-container" aria-live="polite">
+  <div class="toast" *ngFor="let n of notifications$ | async" [class.toast-error]="n.type === 'error'">
+    <div class="toast-body">
+      <strong>{{ n.message }}</strong>
+      <pre *ngIf="n.detail">{{ n.detail }}</pre>
+    </div>
+    <button type="button" class="toast-close" (click)="close(n.id)" aria-label="Cerrar mensaje">×</button>
+  </div>
+</div>

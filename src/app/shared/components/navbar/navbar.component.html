@@ -1,0 +1,19 @@
+<header class="navbar">
+  <div class="navbar-inner">
+    <a routerLink="/posts" class="brand">
+      <span class="logo">DJ</span>
+      <span>Panel DummyJSON</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Principal">
+      <a routerLink="/posts" routerLinkActive="active">Publicaciones</a>
+      <a routerLink="/profile" routerLinkActive="active">Mi perfil</a>
+    </nav>
+
+    <div class="nav-user" *ngIf="user$ | async as user">
+      <span class="avatar avatar-sm">{{ initials(user) }}</span>
+      <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+      <button type="button" class="btn btn-outline-light" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+</header>

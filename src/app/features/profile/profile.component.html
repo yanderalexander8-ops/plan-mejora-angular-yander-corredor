@@ -1,0 +1,36 @@
+<div class="page">
+  <p class="breadcrumb">Inicio / Mi perfil</p>
+  <h1 class="page-title">Mi perfil</h1>
+
+  <app-spinner *ngIf="loading" message="Cargando perfil..."></app-spinner>
+  <div class="alert alert-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <div class="profile-grid" *ngIf="profile">
+    <aside class="card profile-summary">
+      <span class="avatar avatar-lg">{{ initials }}</span>
+      <h2>{{ profile.firstName }} {{ profile.lastName }}</h2>
+      <p class="muted">&#64;{{ profile.username }}</p>
+      <span class="badge badge-blue">{{ profile.role }}</span>
+    </aside>
+
+    <section class="card">
+      <h2 class="card-title">Información personal</h2>
+      <dl class="info-list">
+        <dt>Correo</dt>
+        <dd>{{ profile.email }}</dd>
+        <dt>Teléfono</dt>
+        <dd>{{ profile.phone }}</dd>
+        <dt>Fecha de nacimiento</dt>
+        <dd>{{ profile.birthDate }}</dd>
+        <dt>Género</dt>
+        <dd>{{ profile.gender }}</dd>
+        <dt>Universidad</dt>
+        <dd>{{ profile.university }}</dd>
+        <dt>Empresa</dt>
+        <dd>{{ profile.company.name }}</dd>
+        <dt>Ciudad</dt>
+        <dd>{{ profile.address.city }}, {{ profile.address.country }}</dd>
+      </dl>
+    </section>
+  </div>
+</div>

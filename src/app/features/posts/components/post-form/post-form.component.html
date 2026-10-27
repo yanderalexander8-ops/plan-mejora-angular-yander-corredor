@@ -1,0 +1,43 @@
+<div class="page">
+  <p class="breadcrumb">Inicio / Publicaciones / {{ isEdit ? 'Editar' : 'Nueva' }}</p>
+  <h1 class="page-title">{{ isEdit ? 'Editar publicación' : 'Nueva publicación' }}</h1>
+
+  <app-spinner *ngIf="loading" message="Cargando formulario..."></app-spinner>
+  <div class="alert alert-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+  <form class="card form-card" [formGroup]="form" (ngSubmit)="save()" novalidate *ngIf="!loading && !errorMessage">
+    <div class="field">
+      <label for="title">Título *</label>
+      <input id="title" type="text" formControlName="title" [class.invalid]="isInvalid('title')" />
+      <small class="field-error" *ngIf="errorOf('title') as msg">{{ msg }}</small>
+    </div>
+
+    <div class="field">
+      <label for="body">Contenido *</label>
+      <textarea id="body" rows="5" formControlName="body" [class.invalid]="isInvalid('body')"></textarea>
+      <small class="field-error" *ngIf="errorOf('body') as msg">{{ msg }}</small>
+    </div>
+
+    <div class="field">
+      <label for="tags">Etiquetas *</label>
+      <select id="tags" multiple size="6" formControlName="tags" [class.invalid]="isInvalid('tags')">
+        <option *ngFor="let tag of tags" [ngValue]="tag">{{ tag }}</option>
+      </select>
+      <small class="muted">Mantén presionada la tecla Ctrl (o Cmd en Mac) para elegir varias.</small>
+      <small class="field-error" *ngIf="errorOf('tags') as msg">{{ msg }}</small>
+    </div>
+
+    <div class="field field-short">
+      <label for="userId">ID de usuario *</label>
+      <input id="userId" type="number" min="1" step="1" formControlName="userId" [class.invalid]="isInvalid('userId')" />
+      <small class="field-error" *ngIf="errorOf('userId') as msg">{{ msg }}</small>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/posts" class="btn">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid || saving">
+        {{ saving ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+  </form>
+</div>

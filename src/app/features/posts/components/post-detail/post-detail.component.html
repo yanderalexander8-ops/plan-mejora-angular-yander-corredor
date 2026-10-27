@@ -1,0 +1,40 @@
+<div class="page">
+  <p class="breadcrumb">Inicio / Publicaciones / Detalle</p>
+
+  <app-spinner *ngIf="loading" message="Cargando publicación..."></app-spinner>
+
+  <div class="alert alert-error" role="alert" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <a routerLink="/posts" class="btn" *ngIf="errorMessage">← Volver</a>
+
+  <ng-container *ngIf="post">
+    <div class="page-header">
+      <h1 class="page-title">{{ post.title }}</h1>
+      <div class="header-actions">
+        <a routerLink="/posts" class="btn">← Volver</a>
+        <a [routerLink]="['/posts', post.id, 'edit']" class="btn btn-primary">Editar</a>
+      </div>
+    </div>
+
+    <article class="card detail-card">
+      <div class="tags">
+        <span class="badge badge-blue" *ngFor="let tag of post.tags">{{ tag }}</span>
+      </div>
+      <p class="detail-body">{{ post.body }}</p>
+
+      <hr />
+
+      <dl class="info-list">
+        <dt>ID</dt>
+        <dd>{{ post.id }}</dd>
+        <dt>Usuario (userId)</dt>
+        <dd>{{ post.userId }}</dd>
+        <dt>Vistas</dt>
+        <dd>{{ post.views }}</dd>
+        <dt>Likes</dt>
+        <dd>{{ post.reactions.likes }}</dd>
+        <dt>Dislikes</dt>
+        <dd>{{ post.reactions.dislikes }}</dd>
+      </dl>
+    </article>
+  </ng-container>
+</div>

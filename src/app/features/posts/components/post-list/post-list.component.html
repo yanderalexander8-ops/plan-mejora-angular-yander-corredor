@@ -1,0 +1,93 @@
+<div class="page">
+  <p class="breadcrumb">Inicio / Publicaciones</p>
+  <div class="page-header">
+    <h1 class="page-title">Publicaciones</h1>
+    <a routerLink="/posts/new" class="btn btn-primary">+ Nueva publicación</a>
+  </div>
+
+  <form class="search-bar" (submit)="$event.preventDefault(); search()">
+    <input
+      type="search"
+      name="search"
+      [formControl]="searchControl"
+      placeholder="Buscar publicaciones por título o contenido"
+      aria-label="Buscar publicaciones"
+    />
+    <button type="submit" class="btn">Buscar</button>
+  </form>
+
+  <div class="alert alert-error" role="alert" *ngIf="errorMessage">
+    {{ errorMessage }}
+    <button type="button" class="btn btn-sm" (click)="load()">Reintentar</button>
+  </div>
+
+  <div class="card table-card">
+    <app-spinner *ngIf="loading" message="Cargando publicaciones..."></app-spinner>
+
+    <div class="table-wrap" *ngIf="!loading && !errorMessage">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Etiquetas</th>
+            <th>Usuario</th>
+            <th>Vistas</th>
+            <th>Likes</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let post of posts">
+            <td>{{ post.id }}</td>
+            <td class="cell-title">{{ post.title }}</td>
+            <td>
+              <span class="badge badge-blue" *ngFor="let tag of post.tags">{{ tag }}</span>
+            </td>
+            <td>{{ post.userId }}</td>
+            <td>{{ post.views }}</td>
+            <td>
+              <span class="badge" [class.badge-green]="post.reactions.likes >= 10" [class.badge-amber]="post.reactions.likes < 10">
+                {{ post.reactions.likes }}
+              </span>
+            </td>
+            <td class="actions">
+              <a [routerLink]="['/posts', post.id]" class="btn btn-sm">Ver</a>
+              <a [routerLink]="['/posts', post.id, 'edit']" class="btn btn-sm">Editar</a>
+              <button type="button" class="btn btn-sm btn-danger" (click)="askDelete(post)">Eliminar</button>
+            </td>
+          </tr>
+          <tr *ngIf="posts.length === 0">
+            <td colspan="7" class="empty">
+              {{ activeQuery ? 'No se encontraron publicaciones para “' + activeQuery + '”.' : 'No hay publicaciones para mostrar.' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      *ngIf="!loading && !errorMessage"
+      [total]="total"
+      [limit]="limit"
+      [skip]="skip"
+      (pageChange)="onPageChange($event)"
+    ></app-pagination>
+  </div>
+</div>
+
+<!-- Confirmación antes de eliminar -->
+<div class="modal-backdrop" *ngIf="postToDelete" (click)="cancelDelete()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delete-title" (click)="$event.stopPropagation()">
+    <h2 id="delete-title">¿Eliminar publicación?</h2>
+    <p>
+      Vas a eliminar la publicación <strong>#{{ postToDelete.id }}</strong>: “{{ postToDelete.title }}”.
+    </p>
+    <div class="modal-actions">
+      <button type="button" class="btn" (click)="cancelDelete()" [disabled]="deleting">Cancelar</button>
+      <button type="button" class="btn btn-danger-solid" (click)="confirmDelete()" [disabled]="deleting">
+        {{ deleting ? 'Eliminando...' : 'Eliminar' }}
+      </button>
+    </div>
+  </div>
+</div>

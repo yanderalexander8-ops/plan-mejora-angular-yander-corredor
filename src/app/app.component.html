@@ -1,0 +1,7 @@
+<!-- La barra de navegación solo se muestra con sesión activa -->
+<app-navbar *ngIf="user$ | async"></app-navbar>
+
+<router-outlet></router-outlet>
+
+<!-- Mensajes de confirmación / error -->
+<app-toast></app-toast>
